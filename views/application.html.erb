@@ -1,0 +1,142 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+  <title>MailIndex</title>
+  <meta charset="utf-8">
+  <style>
+    @import url("//fonts.googleapis.com/css?family=Open+Sans:300,400,700");
+    body,input {
+      font-family: 'Open Sans', Helvetica, Arial, sans-serif;
+      font-size: 16px;
+      font-style: normal;
+      font-variant: normal;
+      font-weight: 400;
+      margin: 0;
+      padding-top: 0;
+    }
+    body {
+      margin: auto;
+      width: 900px;
+    }
+    a, a:visited {
+      color: inherit;
+    }
+
+    input {
+      font-size: 26px;
+      padding: 5px;
+      margin: 0px;
+      border: 1px solid #ccc;
+      background-color: #f1f1f1;
+    }
+    input.submit {
+      -webkit-appearance: button;
+      width: 110px;
+    }
+
+    h1 {
+      margin-top: 40px;
+      margin-bottom: 50px;
+      font-size: 46px;
+    }
+    img {
+      vertical-align: middle;
+      margin-right: 20px;
+      border: 0px;
+    }
+    span.highlight {
+      background-color: #ffdc00;
+    }
+    th {
+      text-align: left;
+    }
+    div.body {
+      color: #aaa;
+      font-style: italic;
+    }
+    a.mail {
+      margin-top: 25px;
+      display: block;
+      text-decoration: none;
+    }
+    a.mail:hover {
+      background-color: #eee;
+    }
+  </style>
+  </head>
+  <body>
+    <h1>MailIndex</h1>
+    <h2>Search for a part of your mail.</h2>
+    <form action="" method="GET">
+      <input class="query" type="text" name="query" placeholder="quick brown fox" autofocus>
+      <input class="submit" type="submit" value="Check">
+    </form>
+    <% if search_results %>
+      <% search_results.each do |result| %>
+        <a href="#<%= result['_id'] %>" class="mail">
+          <div class="headers">
+            <table>
+              <tr>
+                <th>From</th>
+                <td>
+                  <% if result['highlight']['from'] %>
+                    <%= result['highlight']['from'].join(', ') %>
+                  <% else %>
+                    <%= result['_source']['from'].join(', ') %>
+                  <% end %>
+                </td>
+              </tr>
+            <% if result['_source']['to'].any? %>
+              <tr>
+                <th>To</th>
+                <td>
+                  <% if result['highlight']['to'] %>
+                    <%= result['highlight']['to'].join(', ') %>
+                  <% else %>
+                    <%= result['_source']['to'].join(', ') %>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+            <% if result['_source']['cc'].any? %>
+              <tr>
+                <th>CC</th>
+                <td>
+                  <% if result['highlight']['cc'] %>
+                    <%= result['highlight']['cc'].join(', ') %>
+                  <% else %>
+                    <%= result['_source']['cc'].join(', ') %>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+            <% if result['_source']['bcc'].any? %>
+              <tr>
+                <th>BCC</th>
+                <td>
+                  <% if result['highlight']['bcc'] %>
+                    <%= result['highlight']['bcc'].join(', ') %>
+                  <% else %>
+                    <%= result['_source']['bcc'].join(', ') %>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+              <tr>
+                <th>Subject</th>
+                <td>
+                  <% if result['highlight']['subject'] %>
+                    <%= result['highlight']['subject'].first %>
+                  <% else %>
+                    <%= result['_source']['subject'] %>
+                  <% end %>
+                </td>
+              </tr>
+            </table>
+          </div>
+          <div class="body"><%= result['highlight']['body'] ? result['highlight']['body'].join(' ... ') : '' %></div>
+        </div>
+      <% end %>
+    <% end %>
+  </body>
+</html>

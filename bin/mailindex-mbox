@@ -1,0 +1,10 @@
+#!/usr/bin/env ruby
+
+$: << File.expand_path('../../lib', __FILE__)
+
+require 'elasticsearch'
+require 'mail_index/input/mbox'
+
+es = Elasticsearch::Client.new log: false
+
+MailIndex::Input::Mbox.new(es, ARGV[0], 'raffael').run

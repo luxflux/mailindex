@@ -1,0 +1,23 @@
+#!/usr/bin/env ruby
+
+$: << File.expand_path('../../lib', __FILE__)
+
+require 'elasticsearch'
+require 'mail'
+
+es = Elasticsearch::Client.new log: false
+
+keyword = ARGV[0]
+
+query = {
+  match_phrase: { body: keyword },
+}
+highlight = {
+  fields: {
+    _all: {number_of_fragments: 3}
+  }
+}
+
+es.search(index: '_all', type: :mail, body: {query: query, highlight: highlight}).each do |indexed_mail|
+  puts indexed_mail.inspect
+end
