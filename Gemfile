@@ -3,7 +3,8 @@ source 'https://rubygems.org'
 gem 'elasticsearch'
 gem 'mail'
 
-gem 'sinatra'
+gem 'foreman'
+gem 'puma'
 
 group :development do
   gem 'shotgun'

@@ -1,6 +1,6 @@
 require 'elasticsearch'
 require 'mail'
-
+require 'erb'
 
 module MailIndex
   class Webapp
