@@ -11,7 +11,3 @@ For the first release, there are two inputs planned: `IMAP` and `MBOX`.
 ### MBOX
 
 Reads a mbox file and adds the not yet added mails to the index.
-
-### IMAP
-
-Checks an IMAP Folder on a regular basis for new mail and adds them to the index.
