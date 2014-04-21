@@ -21,7 +21,7 @@ module MailIndex
     def search_results
       return nil unless @request.params['query']
       return @search_results if @search_results
-      @search_results = @elasticsearch.search(index: '_all', type: :mail, size: 25, body: {query: query, highlight: highlight})['hits']['hits']
+      @search_results = @elasticsearch.search(index: index, type: :mail, size: 25, body: {query: query, highlight: highlight})['hits']['hits']
     end
 
     def query
@@ -48,6 +48,14 @@ module MailIndex
           body: {number_of_fragments: 3},
         }
       }
+    end
+
+    def index
+      "mailindex_#{remote_user}_*"
+    end
+
+    def remote_user
+      @request.env['HTTP_REMOTE_USER'] || @request.env['HTTP_X_FORWARDED_USER']
     end
 
     private
