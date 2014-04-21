@@ -16,7 +16,6 @@ module MailIndex
       end
 
       def run
-        @es_connection.indices.delete index: index rescue nil
         File.open @mbox_file, 'rb' do |file|
           buf = nil
 
